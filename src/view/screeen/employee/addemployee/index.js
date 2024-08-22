@@ -1,4 +1,19 @@
+import { useState } from "react"
+
 const AddEmployee = () => {
+
+
+    const[file,setFile]=useState("")
+    const onCLickFileUpload=(value)=>{
+        console.log("==>>>>>>>>>log",value.target.files[0])
+            }
+    const onCLickFile=()=>{
+console.log("==>>>>>>>>>log",file)
+    }
+
+
+
+
     return (
         <div style={{ backgroundColor: 'white', margin: '10px' }}>
             <h1>Create new user</h1>
@@ -43,7 +58,7 @@ const AddEmployee = () => {
             <div style={{ display: "flex", marginLeft: '10px' }}>
 
 
-                <div style={{width:'190px',height:''}}>
+                <div style={{ width: '190px', height: '' }}>
                     <select name="" id="" >
                         <option value="">Select Acdemic Year</option>
                         <option value="First Year">First Year</option>
@@ -55,13 +70,21 @@ const AddEmployee = () => {
                 <div style={{ marginLeft: '10px' }}>
                     <input type="text" placeholder="roll number" /> <br /><br />
                 </div>
- 
+
             </div>
 
-            <div style={{display:'flex',background:'red',justifyContent:'center',height:'50px'}} >
-            <button style={{backgroundColor:'blue',width:'100px',borderRadius:'10px',margin:'5px'}} >ADD</button>
+            <div style={{ display: "flex", marginLeft: '10px' }}>
+                <div>
+                    <input type="file" placeholder='file'  onChange={onCLickFileUpload} /><br /><br />
+                </div>
+
+            
             </div>
-       
+
+            <div style={{ display: 'flex', background: 'red', justifyContent: 'center', height: '50px' }} >
+                <button onClick={onCLickFile} style={{ backgroundColor: 'blue', width: '100px', borderRadius: '10px', margin: '5px' }} >ADD</button>
+            </div>
+
         </div>
     )
 }

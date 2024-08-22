@@ -1,5 +1,15 @@
 .stylecontiner {
     background-color: #da4343;
+     display: block;
+ }
+.maincontainer {
+    background-color: #da4343;
+     display: flex
+     ;
+ }
+
+ .styleNavContaniner{
+    
     width: 20%;
     background-color: aqua;
     

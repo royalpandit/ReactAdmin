@@ -85,8 +85,8 @@ const App = () => {
 
             }
           </div> */}
-              <div className='styleNavContaniner'> ̑
-          <SideBar/>
+          <div className='styleNavContaniner'> ̑
+            <SideBar />
 
           </div>
           <div style={{ width: '80%', height: '100%' }}>
