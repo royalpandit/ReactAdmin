@@ -1,0 +1,29 @@
+.stylecontiner {
+    background-color: #da4343;
+     display: block
+     ;
+ }
+.maincontainer {
+    background-color: #da4343;
+     display: flex
+     ;
+ }
+
+ .styleNavContaniner{
+    
+    width: 20%;
+    background-color: aqua;
+    
+ }
+ .styleNavContaniner1{
+    margin: 10px;
+    background: #e11b1b;
+    width: 80%;
+     
+ }
+ .styleWrap{
+    width: 100%;
+    margin-top: 1%;
+     margin-right: 5%;
+    margin-bottom: 1%;
+  }
