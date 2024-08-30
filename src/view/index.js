@@ -59,9 +59,7 @@ const App = () => {
 
     <BrowserRouter>
       <div >
-        <div>
-          <h1>top</h1>
-        </div>
+        
         {/* <div style={{backgroundColor:'red',display:'flex'}}> */}
         <div className='maincontainer'>
           {/* <div className='styleNavContaniner'> ̑

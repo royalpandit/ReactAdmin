@@ -4,14 +4,13 @@
  }
 .maincontainer {
     background-color: #da4343;
-     display: flex
-     ;
+     display: flex;
  }
 
  .styleNavContaniner{
     
     width: 20%;
-    background-color: aqua;
+    background-color: rgb(28, 11, 91);
     
  }
  .styleNavContaniner1{

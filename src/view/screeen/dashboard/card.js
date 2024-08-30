@@ -7,7 +7,7 @@ const Card=({ title, value, color })=> {
                         <div className="col mr-2">
                             <div className={`text-xl font-weight-bold text-${color} text mb-1`}>
                                 {title}</div>
-                            <div className="h5 mb-0 font-weight-bold text-gray-800">No:- {value}</div>
+                            <div className={`h5 mb-0 font-weight-bold text-${color}`}>No:- {value }</div>
                         </div>
                         <div className="col-auto">
                             <i className="fas fa-calendar fa-2x text-gray-300"></i>

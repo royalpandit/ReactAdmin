@@ -24,7 +24,7 @@ const Dashboard = () => {
             <div className="row">
                 {
                     datatransfer.map(d => (
-                        <Card title={d.name} value={d.Value} color="info" />
+                        <Card  title={d.name} value={d.Value} color="white" />
                     ))
                 }
             </div>

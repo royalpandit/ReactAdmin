@@ -1,4 +1,5 @@
-import { useState } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 const AddEmployee = () => {
 
@@ -8,11 +9,25 @@ const AddEmployee = () => {
         console.log("==>>>>>>>>>log",value.target.files[0])
             }
     const onCLickFile=()=>{
-console.log("==>>>>>>>>>log",file)
+ console.log("==>>>>>>>>>log",file)
+    }
+    const ApiCall = () => {
+        console.log('Demo12345')
+        let params = { "owner_id": 40, "logged_id": 40,"company_id":1 }
+//https://portal.nircore.com/api/employee-list
+//http://192.168.16.148:4000/getList
+        axios.post("ttp://192.168.16.148:4000/getList", params).then(d => d.data.data.employee_result).then(a => {
+            console.log('Log==>>>>',a)
+         //   setData(a)
+          //  setdatadesignation(a)
+        }).catch(e => { console.log(e) })
     }
 
+    useEffect(() => {
+        ApiCall()
 
 
+    }, [])
 
     return (
         <div style={{ backgroundColor: 'white', margin: '10px' }}>

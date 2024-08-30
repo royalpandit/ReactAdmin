@@ -9,6 +9,38 @@ import { Link } from "react-router-dom";
 const LoginPage = () => {
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    const handlLogin = () => {
+
+        console.log(email);
+        console.log(password);
+
+
+        let url = "http://localhost:4000/login"
+        let params = {
+            email,
+            password
+        }
+        const customHeaders = {
+            "Content-Type": "application/json",
+        }
+
+        fetch(url, {
+            method: "POST",
+            headers: customHeaders,
+            body: JSON.stringify(params),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
+
+
+    }
+
     return (
         <div
             className="sign-in__wrapper"
@@ -53,6 +85,8 @@ const LoginPage = () => {
                             type="text"
                             placeholder="Username"
                             required
+                            value={email}
+                            onChange={(v) => setEmail(v.target.value)}
                         />
                     </Form.Group>
                     <Form.Group className="mb-2" controlId="password">
@@ -61,13 +95,16 @@ const LoginPage = () => {
                             type="password"
                             placeholder="Password"
                             required
+
+                            value={password}
+                            onChange={(v) => setPassword(v.target.value)}
                         />
                     </Form.Group>
                     <Form.Group className="mb-2" controlId="checkbox">
                         <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
                     {!loading ? (
-                        <Button className="w-100" variant="primary" type="submit">
+                        <Button className="w-100" variant="primary" type="button" onClick={handlLogin}>
                             Log In
                         </Button>
                     ) : (
@@ -90,9 +127,9 @@ const LoginPage = () => {
                 </div>
             </Form>
             {/* Footer */}
-            <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
+            {/*  <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
                 Made by Abi | &copy;2022
-            </div>
+            </div> */}
         </div>
 
 
