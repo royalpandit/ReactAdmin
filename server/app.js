@@ -1,4 +1,5 @@
 const express = require("express");
+const dotenv=require("dotenv")
 require("dotenv").config();
 const connectDB = require("./db/connect");
 const app = express()
@@ -12,7 +13,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 //Port and Connect to DB
-const port = process.env.PORT || 5000;
+const port = process.env.PORT ;
 /* 
 const mongoose = require('mongoose');
 mongoose.connect("mongodb+srv://ab8107116:pyLnlkGAq7kapreV@demoreact.af5gw.mongodb.net/?retryWrites=true&w=majority&appName=demoReact", {useNewUrlParser: true});
@@ -23,10 +24,10 @@ mongoose.connect("mongodb+srv://ab8107116:pyLnlkGAq7kapreV@demoreact.af5gw.mongo
 const start = async () => {
     console.log(process.env.URL);
     try {
-        await connectDB(env.process.URL);
+      //  await connectDB(process.env.URL);
         
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
+        app.listen(4000, () => {
+            console.log(`Server is running on port ${4000}`);
         });
     } catch (error) {
         console.log("error =>", error);
@@ -47,6 +48,13 @@ app.get('/getList', (request, response) => {
 })
 app.post('/getFees', (request, response) => {
     response.send(request.body)
+})
+
+
+app.post('/uploadFile',(request,response) => {
+
+    console.log("file==>>",request)
+    response.send(request)
 })
 
 app.post("/login", (req, res) => {
