@@ -1,74 +1,52 @@
-const express = require("express");
-const dotenv=require("dotenv")
-require("dotenv").config();
-const connectDB = require("./db/connect");
+const express = require("express")
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config();
+process.env.TOKEN_SECRET;
 const app = express()
-const cors = require('cors')
-const authRouter = require("./routes/auth");
-app.use(cors());
+app.use(cors())
 app.use(express.json())
-app.use("/api", authRouter);
-
-const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+const port = 4000
+const multer = require('multer')
+app.use((req, res, next) => {
 
-//Port and Connect to DB
-const port = process.env.PORT ;
-/* 
-const mongoose = require('mongoose');
-mongoose.connect("mongodb+srv://ab8107116:pyLnlkGAq7kapreV@demoreact.af5gw.mongodb.net/?retryWrites=true&w=majority&appName=demoReact", {useNewUrlParser: true});
-*/
 
-///
+    console.log(process.env.FRONTEND_URL);
 
-const start = async () => {
-    console.log(process.env.URL);
-    try {
-      //  await connectDB(process.env.URL);
-        
-        app.listen(4000, () => {
-            console.log(`Server is running on port ${4000}`);
-        });
-    } catch (error) {
-        console.log("error =>", error);
+    // Set CORS headers
+    res.header("Access-Control-Allow-Origin", "*"); // Replace with your frontend domain
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials (cookies, etc.)
+
+    // Pass to next layer of middleware
+    next();
+});
+app.listen(port, () => console.log("The server is listening on port", { port }))
+
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+
+
+        cb(null, 'public/upload/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
     }
-};
-start();
-///
-
-
-
-
-app.get('/', (request, response) => {
-    response.send("Message Send")
-})
-
-app.get('/getList', (request, response) => {
-    response.send("Student List")
-})
-app.post('/getFees', (request, response) => {
-    response.send(request.body)
 })
 
 
-app.post('/uploadFile',(request,response) => {
 
-    console.log("file==>>",request)
-    response.send(request)
+const upload = multer({ storage: storage })
+app.post('/upload', upload.single('image'), async (req, res) => {
+
+
+    console.log("req.file", req.file);
+
+
+    res.json({ "success": true, "data": req.file })
 })
-
-app.post("/login", (req, res) => {
-
-
-    const user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-    user.save();
-    const docs = User.find().then(res => res.json()).then(data => data);
-    console.log(docs);
-    let result = { sucess: true, message: "REsult Hit", status: 200, }
-    res.json(result)
-}
-
-)

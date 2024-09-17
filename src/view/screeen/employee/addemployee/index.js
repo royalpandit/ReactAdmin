@@ -10,31 +10,33 @@ const AddEmployee = () => {
     const onCLickFileUpload = (value) => {
         console.log("==>>>>>>>>>log", value.target.files[0])
         setFile(value.target.files[0])
-        
+
     }
     const onCLickFile = () => {
         console.log("==>>>>>>>>>log", file)
         let data = new FormData()
-        data.append("file",file)
-        axios.post('http://localhost:4000/uploadFile', data, {
+        data.append("image", file)
+        axios.post('http://localhost:4000/upload', data, {
             headers: {
-              'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data'
             }
-        })
+        }).then(data => data.data).then(data => {
+            console.log(data)
+        }).catch(err => console.log(err))
 
-      /*   let data = new FormData()
-        data.append("file",file)
-        
-        let info ={};
-       info.headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data',
-          }
-          info.body=data
-        axios.post("http://localhost:4000/uploadFile", info).then(d => d.data).then(data => {
-            console.log(data);
-        }) .catch(err=>console.log(err)) */
-        
+        /*   let data = new FormData()
+          data.append("file",file)
+          
+          let info ={};
+         info.headers = {
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data',
+            }
+            info.body=data
+          axios.post("http://localhost:4000/uploadFile", info).then(d => d.data).then(data => {
+              console.log(data);
+          }) .catch(err=>console.log(err)) */
+
 
     }
     /*  const ApiCall = () => {
@@ -53,7 +55,7 @@ const AddEmployee = () => {
 
 
     useEffect(() => {
-       // ApiCall()
+        // ApiCall()
 
 
     }, [])
