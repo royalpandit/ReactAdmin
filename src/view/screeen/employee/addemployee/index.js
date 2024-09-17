@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { URL } from "../../../utils"
 
 const AddEmployee = () => {
 
@@ -12,16 +13,98 @@ const AddEmployee = () => {
         setFile(value.target.files[0])
 
     }
-    const onCLickFile = () => {
+
+
+
+useEffect(()=>{
+    showDocument(1,1,1)
+},[])
+
+    async function showDocument(id,session,classdata){
+
+       
+     
+        //let url = `${localbasicurl}getStudentsPageApi?currentpage=${page}&limit=${limit}&branchid=${id}&session=${session}&selectclass=${selectclass}`
+        let params = { branchId: id,sessionName:session,classdata }
+        let info= {};
+        info.method = 'post';
+        info.headers = {
+          'Content-Type': 'application/json',
+        }
+        info.body = JSON.stringify(params)
+        let url = URL + "getStudentsByClassApi"
+        await fetch(url, info)
+        .then((res)=>res.json())
+        .then((data)=>{
+         
+          console.log("data",data);
+          if(data.success){
+            let stdata1 =data.data.studata
+            
+            console.log(data.data);
+            
+           
+            
+         
+          }
+          else{
+            
+          }
+          
+           })
+        .catch(err=>console.log("erro=>",err))
+        .finally(()=>{
+          
+        })
+        
+      }
+
+
+const onCLickFile= async()=>{
+    let data = new FormData();
+    data.append("file", file)
+        data.append("class",1)
+        data.append("branchId",1)
+        data.append("groupId",1)
+        data.append("sessionName",1)
+    
+    let urlOfS = URL+"uploadExcelFile"; // your url
+    console.log(urlOfS);
+    
+    const responseOfFileUpload = await fetch(urlOfS, {
+    method: 'POST',
+   
+    body:data,
+    });
+  
+   
+    
+   
+
+        console.log(responseOfFileUpload);
+        if(responseOfFileUpload.status){
+            showDocument(1,1,1)
+        }
+        
+
+   
+
+}
+
+    const onCLickFile11 = () => {
         console.log("==>>>>>>>>>log", file)
         let data = new FormData()
-        data.append("image", file)
-        axios.post('http://localhost:4000/upload', data, {
+        data.append("file", file)
+        data.append("class",1)
+        data.append("branchId",1)
+        data.append("groupId",1)
+        data.append("sessionName",1)
+        axios.post( URL+'uploadExcelFile', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }).then(data => data.data).then(data => {
-            console.log(data)
+            console.log("res=>>",data)
         }).catch(err => console.log(err))
 
         /*   let data = new FormData()

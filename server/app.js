@@ -10,9 +10,10 @@ app.use(express.json())
 app.use(bodyParser.json());
 const port = 4000
 const multer = require('multer')
+const Student = require("./models/Student"); 
 app.use((req, res, next) => {
 
-
+   
     console.log(process.env.FRONTEND_URL);
 
     // Set CORS headers
@@ -28,25 +29,75 @@ app.listen(port, () => console.log("The server is listening on port", { port }))
 
 
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
 
 
-        cb(null, 'public/upload/')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
+
+var excelStorage = multer.diskStorage({  
+    destination:(req,file,cb)=>{  
+         cb(null,'./public/upload');     
+    },  
+    filename:(req,file,cb)=>{  
+         cb(null,file.originalname);  
+    }  
+});  
+var excelUploads = multer({storage:excelStorage});  
+app.post('/uploadExcelFile', excelUploads.single("file"),async (req, res) =>{  
+   let result=""
+    let id=0;
+    let resp = await Student.find({ branchId: req.body.branchId, sessionName:req.body.sessionName}).then((res)=>res)
+            
+            if(resp.length>0){
+              
+                resp.map(d=>{
+                    id=d.studentsId
+                })
+                 id++  
+            }else{
+                id=1;
+            }
+            let datastudent =await  Student.find({ branchId: req.body.branchId, sessionName:req.body.sessionName}).then(res=>res)
+          //  console.log(datastudent);
+       importFile('./public' + '/excelUploads/' + req.file.filename);
+            function importFile(filePath){
+            
+                const file = reader.readFile(filePath) 
+                 let data = [] 
+                const sheets = file.SheetNames 
+            
+               for(let i = 0; i < 1; i++) 
+                { 
+                   const temp = reader.utils.sheet_to_json( 
+                        file.Sheets[file.SheetNames[0]]) 
+                      
+                   temp.forEach((res,index) => { 
+
+             
+                    res["studentsId"]=id++
+                    res["ClassSection"]=req.body.class
+                    res["branchId"]=req.body.branchId
+                    res["groupId"]=req.body.groupId
+                    res["sessionName"]=req.body.sessionName
+                     res["otp"]="1111"
+                     res["status"]="students"
+                      res["image"]=""
+                   
+                    data.push(res) 
+                   }) 
+                } 
+          
+
+                Student.insertMany(data)
+                    .then(function () {
+        console.log("Successfully saved defult items to DB");
+        result="Successfully saved defult items to DB"
+      })
+      .catch(function (err) {
+        console.log("duplicat=>>",err.writeErrors[0].err.errmsg);
+        result=err.writeErrors[0].err.errmsg
+      }); 
+                 
     }
-})
 
 
-
-const upload = multer({ storage: storage })
-app.post('/upload', upload.single('image'), async (req, res) => {
-
-
-    console.log("req.file", req.file);
-
-
-    res.json({ "success": true, "data": req.file })
+           res.json(result)
 })
