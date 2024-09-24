@@ -1,7 +1,9 @@
-import { useState } from "react";
-import studentData from '../../../data/allStudents.json';
-
+ import studentData from '../../../data/allStudents.json';
+import { useEffect, useState } from "react"
+import axios from "axios"
 import { Link } from "react-router-dom";
+import { URL } from "../../../utils"
+
 import {
     Badge,
     Button,
@@ -15,10 +17,56 @@ import {
     MultiSelectBox,
     MultiSelectBoxItem,
 } from '@tremor/react';
+
+
+
+
 const AllStudent = () => {
     const [selectedNames, setSelectedNames] = useState([]);
     const isStudentSelected = (student) =>
-        selectedNames.includes(student.studentId) || selectedNames.length === 0;
+        selectedNames.includes(student.studentsId) || selectedNames.length === 0;
+
+    useEffect(()=>{
+        showList(1,1,1)
+    },[])
+
+
+    async function showList(id,session,classdata){
+
+       
+     
+         let params = { branchId: id,sessionName:session,classdata }
+        let info= {};
+        info.method = 'post';
+        info.headers = {
+          'Content-Type': 'application/json',
+        }
+        info.body = JSON.stringify(params)
+        let url = URL + "getStudentsByClassApi"
+        await fetch(url, info)
+        .then((res)=>res.json())
+        .then((data)=>{
+         
+          console.log("data",data);
+          if(data.success){
+            let stdata1 =data.data.studata
+            console.log(data.data);
+            console.log(data.data.studata);
+            setSelectedNames(data.data.studata)
+            
+          }
+          else{
+            
+          }
+          
+           })
+        .catch(err=>console.log("erro=>",err))
+        .finally(()=>{
+          
+        })
+        
+      }
+
 
     return (
 
@@ -41,16 +89,16 @@ const AllStudent = () => {
                             placeholder="Select by ID..."
                             maxWidth="max-w-xs"
                         >
-                            {studentData.map((item) => (
+                            {selectedNames.map((item) => (
                                 <MultiSelectBoxItem
-                                    key={item.studentId}
-                                    value={item.studentId}
+                                    key={item.studentsId}
+                                    value={item.studentsId}
                                     text={
-                                        item.studentId +
+                                        item.studentsId +
                                         " : " +
-                                        item.studentFirstName +
+                                        item.FirstName +
                                         " " +
-                                        item.studentMiddleLastName
+                                        item.sessionName
                                     }
                                 />
                             ))}
@@ -69,25 +117,28 @@ const AllStudent = () => {
                             </TableHead>
 
                             <TableBody>
-                                {studentData
-                                    .filter((item) => isStudentSelected(item))
-                                    .map((item) => (
-                                        <TableRow key={item.studentId}>
+                                {/* selectedNames
+                                    .filter((item) => isStudentSelected(item)) */
+
+                                    selectedNames.map((item) => (
+                                        <TableRow key={item.studentsId}>
                                             <TableCell>
-                                                <Badge text={item.studentId} size="xs" color="sky" />
+                                                <Badge text={item.studentsId} size="xs" color="sky" />
                                             </TableCell>
                                             <TableCell>
-                                                {item.studentFirstName + " " + item.studentMiddleLastName}
+                                                {item.FirstName }
+                                                {/* {item.FirstName + " " + item.studentMiddleLastName} */}
+
                                             </TableCell>
                                             <TableCell>
-                                                {item.classEnrolled + " / " + item.sectionAssigned}
+                                                {item.status + " / " + item.Medium}
                                             </TableCell>
-                                            <TableCell>{item.dateOfAdmission}</TableCell>
-                                            <TableCell>{item.guardianFullName}</TableCell>
-                                            <TableCell>{item.guardianPhone}</TableCell>
+                                            <TableCell>{item.className}</TableCell>
+                                            <TableCell>{item.PreviousSchoolSRNo}</TableCell>
+                                            <TableCell>{item.CCity}</TableCell>
                                             <TableCell>
                                                 <Link
-                                                    to={item.studentId.toLowerCase()}
+                                                    to={item.studentsId}
                                                     className="rounded-full bg-green-200 py-[3px] px-3 text-xs text-green-900 transition-all hover:bg-green-100"
                                                 >
                                                     View

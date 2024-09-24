@@ -3,6 +3,11 @@ const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const shortid = require("shortid");
+const register=require("../models/register")
+
+
+
+
 const signUp = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
@@ -34,7 +39,30 @@ const signUp = async (req, res) => {
                     .json({ message: "User created Successfully" });
         });
     }
+
+
+
+
 };
+
+
+const registerApi=async(req,res)=>{
+
+const {firstName,lastName,email,password}=req.body
+console.log(req.body)
+
+const reg=new register({
+    firstName,lastName,email,password
+});
+
+ reg.save();
+console.log("==>>>",reg)
+
+   res.json(req.body)
+}
+
+
+
 const signIn = async (req, res) => {
     try {
         if (!req.body.email || !req.body.password) {
@@ -69,4 +97,4 @@ const signIn = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error });
     }
 };
-module.exports = { signUp, signIn };
+module.exports = { signUp, signIn,registerApi };
